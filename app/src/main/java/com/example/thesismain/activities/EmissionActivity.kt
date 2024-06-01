@@ -279,7 +279,8 @@ class EmissionActivity : AppCompatActivity() {
 
         // Format the current time to a readable string with timezone information
         val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault())
-        sdf.timeZone = TimeZone.getDefault()
+        val pstTimeZone = TimeZone.getTimeZone("Asia/Manila")
+        sdf.timeZone = pstTimeZone
         val formattedDate = sdf.format(Date())
 
         val apiService = ApiClient.create(token)
