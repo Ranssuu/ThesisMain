@@ -1,7 +1,7 @@
 package com.example.thesismain.models
 
 data class Vehicle(
-    val id: String,
+    val id: String? = null,
     val plateNo: String,
     val engineNo: String,
     val chassisNo: String,
@@ -10,5 +10,5 @@ data class Vehicle(
     val mvType: String,
     val color: String,
     val classification: String,
-    val owner: String
+    val owner: String? = null
 )

@@ -29,9 +29,6 @@ class EditVehicleActivity : AppCompatActivity() {
     private lateinit var classificationEditText: EditText
     private lateinit var submitButton: Button
 
-    private var vehicleId: String? = null
-    private var ownerId: String? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_vehicle)
@@ -69,9 +66,6 @@ class EditVehicleActivity : AppCompatActivity() {
                         val vehicles = response.body()
                         if (vehicles != null && vehicles.isNotEmpty()) {
                             val vehicle = vehicles[0]  // Assuming a user has only one vehicle
-                            vehicleId = vehicle.id
-                            ownerId = vehicle.owner
-                            Log.d("EditVehicleActivity", "Vehicle ID: $vehicleId")
                             plateNoEditText.setText(vehicle.plateNo)
                             engineNoEditText.setText(vehicle.engineNo)
                             chassisNoEditText.setText(vehicle.chassisNo)
@@ -114,7 +108,6 @@ class EditVehicleActivity : AppCompatActivity() {
         }
 
         val vehicle = Vehicle(
-            id = vehicleId ?: "", // Ensure the correct vehicle ID is passed
             plateNo = plateNo,
             engineNo = engineNo,
             chassisNo = chassisNo,
@@ -123,15 +116,13 @@ class EditVehicleActivity : AppCompatActivity() {
             mvType = mvType,
             color = color,
             classification = classification,
-            owner = ownerId ?: "" // Ensure owner ID is correctly set
+            owner = "" // This will be ignored in the backend
         )
 
         val token = sharedPreferences.getString("auth_token", null)
-        Log.d("EditVehicleActivity", "Updating vehicle with ID: ${vehicle.id}")
-        Log.d("EditVehicleActivity", "Token: $token")
-        if (token != null && vehicleId != null) {
+        if (token != null) {
             val apiService = ApiClient.getRetrofitInstance(token).create(ApiService::class.java)
-            val call = apiService.updateVehicle("Bearer $token", vehicle.id, vehicle)
+            val call = apiService.updateVehicleByToken("Bearer $token", vehicle)
             call.enqueue(object : Callback<Vehicle> {
                 override fun onResponse(call: Call<Vehicle>, response: Response<Vehicle>) {
                     if (response.isSuccessful) {
@@ -152,7 +143,7 @@ class EditVehicleActivity : AppCompatActivity() {
                 }
             })
         } else {
-            Toast.makeText(this, "No token found or vehicle ID is missing", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "No token found", Toast.LENGTH_SHORT).show()
         }
     }
 }

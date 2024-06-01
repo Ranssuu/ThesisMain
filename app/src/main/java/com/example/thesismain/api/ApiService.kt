@@ -33,10 +33,9 @@ interface ApiService {
     ): Call<User>
 
     // Update user vehicle
-    @PUT("api/vehicles/{id}")
-    fun updateVehicle(
+    @PUT("api/vehicles/updateByToken")
+    fun updateVehicleByToken(
         @Header("Authorization") token: String,
-        @Path("id") id: String,
         @Body vehicle: Vehicle
     ): Call<Vehicle>
 

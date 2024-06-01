@@ -33,23 +33,31 @@ exports.getVehicle = async (req, res) => {
   }
 };
 
-exports.updateVehicle = async (req, res) => {
+exports.updateVehicleByToken = async (req, res) => {
     try {
-        const vehicleId = req.params.id; // Log the received id
-        console.log('Update Vehicle Params ID:', vehicleId);
+        const userId = req.user.id; // The ID of the authenticated user
 
-        const updates = req.body;
-        console.log('Update Vehicle Request Body:', updates);
-
-        const updatedVehicle = await Vehicle.findByIdAndUpdate(vehicleId, updates, { new: true });
+        const updatedVehicle = await Vehicle.findOneAndUpdate(
+            { owner: userId },
+            {
+                plateNo: req.body.plateNo,
+                engineNo: req.body.engineNo,
+                chassisNo: req.body.chassisNo,
+                yearModel: req.body.yearModel,
+                makeSeries: req.body.makeSeries,
+                mvType: req.body.mvType,
+                color: req.body.color,
+                classification: req.body.classification,
+            },
+            { new: true }
+        );
 
         if (!updatedVehicle) {
-            return res.status(404).json({ message: 'Vehicle not found' });
+            return res.status(404).json({ error: 'Vehicle not found' });
         }
 
         res.json(updatedVehicle);
-    } catch (error) {
-        console.error('Error updating vehicle:', error.message);
-        res.status(500).json({ message: 'Server error' });
+    } catch (err) {
+        res.status(500).json({ error: 'Server error' });
     }
 };
