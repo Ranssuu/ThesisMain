@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object ApiClient {
-    private const val BASE_URL = "https://thesismain-cmse.onrender.com/"
+    private const val BASE_URL = "https://thesismain-cmse.onrender.com"
 
     // Function to create OkHttpClient with token
     private fun createOkHttpClient(token: String?): OkHttpClient {
