@@ -4,6 +4,6 @@ const auth = require('../middleware/authMiddleware');
 const { addSmokeTest, getHistory } = require('../controllers/smokeTestController');
 
 router.post('/smokeTests', auth, addSmokeTest);
-router.get('/history', auth, getHistory);
+router.get('/smokeTests/history', auth, getHistory);
 
 module.exports = router;
