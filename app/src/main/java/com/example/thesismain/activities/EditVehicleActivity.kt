@@ -64,6 +64,7 @@ class EditVehicleActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<List<Vehicle>>, response: Response<List<Vehicle>>) {
                     if (response.isSuccessful) {
                         val vehicles = response.body()
+                        Log.d("EditVehicleActivity", "Vehicles retrieved: $vehicles")
                         if (vehicles != null && vehicles.isNotEmpty()) {
                             val vehicle = vehicles[0]  // Assuming a user has only one vehicle
                             plateNoEditText.setText(vehicle.plateNo)
@@ -76,9 +77,13 @@ class EditVehicleActivity : AppCompatActivity() {
                             classificationEditText.setText(vehicle.classification)
                         } else {
                             Toast.makeText(this@EditVehicleActivity, "No vehicle details found", Toast.LENGTH_SHORT).show()
+                            Log.e("API Error", "Error: ${response.code()} - ${response.message()}")
+                            Log.e("API Error Body", "Error Body: ${response.errorBody()?.string()}")
                         }
                     } else {
                         Toast.makeText(this@EditVehicleActivity, "Failed to load vehicle details", Toast.LENGTH_SHORT).show()
+                        Log.e("API Error", "Error: ${response.code()} - ${response.message()}")
+                        Log.e("API Error Body", "Error Body: ${response.errorBody()?.string()}")
                     }
                 }
 

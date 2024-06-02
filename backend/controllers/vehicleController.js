@@ -25,7 +25,9 @@ exports.registerVehicle = async (req, res) => {
 
 exports.getVehicle = async (req, res) => {
   try {
+    console.log('Fetching vehicles for user:', req.user.id);
     const vehicle = await Vehicle.find({ owner: req.user.id });
+    console.log('Vehicles found:', vehicles);
     res.json(vehicle);
   } catch (err) {
     console.error('Error getting vehicle:', err.message);
