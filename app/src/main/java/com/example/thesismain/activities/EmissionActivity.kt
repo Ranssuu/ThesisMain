@@ -220,9 +220,14 @@ class EmissionActivity : AppCompatActivity() {
         }
     }
 
+    private var currentOpacity: Float = 0.0f // Class-level variable to store opacity
+
     private fun updateUIWithOpacity(opacity: Float) {
+        // Update the class-level opacity variable
+        currentOpacity = opacity
+
         // Set the progress bar progress
-        val progress = ((opacity / 3.0) *100).toInt()
+        val progress = ((opacity / 3.0) * 100).toInt()
         progressBar.progress = progress
 
         // Set the progress text as percentage
@@ -265,17 +270,8 @@ class EmissionActivity : AppCompatActivity() {
             return
         }
 
-        // Remove the percentage sign and convert to float
-        val opacityString = progressText.text.toString().replace("%", "").trim()
-        val opacityValue = opacityString.toFloatOrNull()
-
-        if (opacityValue == null) {
-            Toast.makeText(this, "Invalid opacity value", Toast.LENGTH_SHORT).show()
-            return
-        }
-
         // Convert opacity value to decimal by dividing by 100
-        val decimalOpacityValue = opacityValue / 100
+        val decimalOpacityValue = currentOpacity
 
         // Format the current time to a readable string with timezone information
         val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault())
@@ -301,6 +297,8 @@ class EmissionActivity : AppCompatActivity() {
                     Toast.makeText(this@EmissionActivity, "Data sent successfully", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this@EmissionActivity, "Failed to send data", Toast.LENGTH_SHORT).show()
+                    Log.e("API Error", "Error: ${response.code()} - ${response.message()}")
+                    Log.e("API Error Body", "Error Body: ${response.errorBody()?.string()}")
                 }
             }
 

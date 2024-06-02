@@ -6,7 +6,13 @@ const Vehicle = require('../models/Vehicle');
 // @access  Private
 // Add Smoke Test
 exports.addSmokeTest = async (req, res) => {
+  console.log('Received body:', req.body); // Log the request body
   const { opacity } = req.body;
+
+  if (!opacity) {
+      return res.status(400).json({ message: 'Opacity is required' });
+    }
+
 
   const smoke_result = opacity >= 2.4 ? 'Failed' : 'Passed';
   const createdAt = new Date().toISOString();
