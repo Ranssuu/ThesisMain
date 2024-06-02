@@ -8,6 +8,11 @@ cron.schedule('0 * * * *', async () => {
     try {
         const users = await User.find();
         for (let user of users) {
+            if (user.admin) {
+                console.log(`Skipping admin user ${user.email}`);
+                continue;
+            }
+
             const vehicles = await Vehicle.find({ owner: user._id });
             if (vehicles.length === 0) {
                 await User.findByIdAndDelete(user._id);

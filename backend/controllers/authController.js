@@ -27,6 +27,7 @@ exports.registerUser = async (req, res) => {
       email,
       password,
       phoneNumber,
+      admin: false
     });
 
     // Hash password before saving

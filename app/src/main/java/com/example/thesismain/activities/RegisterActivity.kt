@@ -65,7 +65,7 @@ class RegisterActivity : AppCompatActivity() {
             return
         }
 
-        val registerRequest = RegisterRequest(firstName, lastName, email, password, phoneNumber)
+        val registerRequest = RegisterRequest(firstName, lastName, email, password, phoneNumber, admin = false)
         val apiService = ApiClient.getRetrofitInstance().create(ApiService::class.java)
         val call = apiService.registerUser(registerRequest)
 
