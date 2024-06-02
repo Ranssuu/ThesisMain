@@ -4,7 +4,7 @@ const { registerVehicle, getVehicle, updateVehicleByToken } = require('../contro
 const auth = require('../middleware/authMiddleware');
 
 router.post('/register', auth, registerVehicle);
-router.get('/', auth, getVehicle);
+router.get('/vehicles', auth, getVehicle);
 router.put('/updateByToken', auth, updateVehicleByToken);
 
 
