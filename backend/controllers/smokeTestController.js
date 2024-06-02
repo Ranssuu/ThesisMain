@@ -8,7 +8,7 @@ const Vehicle = require('../models/Vehicle');
 exports.addSmokeTest = async (req, res) => {
   const { opacity } = req.body;
 
-  const smoke_result = opacity >= 0.48 ? 'Failed' : 'Passed';
+  const smoke_result = opacity >= 2.4 ? 'Failed' : 'Passed';
   const createdAt = new Date().toISOString();
 
   try {
