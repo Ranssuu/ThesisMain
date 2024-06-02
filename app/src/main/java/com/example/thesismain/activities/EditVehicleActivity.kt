@@ -16,7 +16,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class EditVehicleActivity : AppCompatActivity() {
+class EditVehicleActivity : BaseActivity() {
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var plateNoEditText: EditText
@@ -135,6 +135,7 @@ class EditVehicleActivity : AppCompatActivity() {
                         // Start MyVehicleActivity with updated details
                         val intent = Intent(this@EditVehicleActivity, MyVehicleActivity::class.java)
                         startActivity(intent)
+                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
                         finish()
                     } else {
                         Log.e("EditVehicleActivity", "Failed to update vehicle details: ${response.errorBody()?.string()}")

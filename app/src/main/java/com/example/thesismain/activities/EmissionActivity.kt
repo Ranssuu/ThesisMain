@@ -15,6 +15,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -33,7 +34,7 @@ import java.util.Date
 import java.util.Locale
 import java.util.UUID
 
-class EmissionActivity : AppCompatActivity() {
+class EmissionActivity : BaseActivity() {
 
     private val tag = "EmissionActivity"
     private val deviceName = "ESP32SmokeDetector"
@@ -333,5 +334,26 @@ class EmissionActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Log.e(tag, "Error closing connection", e)
         }
+    }
+
+    fun onHomeClicked(view: View) {
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+        finish()
+    }
+
+    fun onHistoryClicked(view: View) {
+        val intent = Intent(this, HistoryActivity::class.java)
+        startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        finish()
+    }
+
+    fun onSettingsClicked(view: View) {
+        val intent = Intent(this, SettingsActivity::class.java)
+        startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        finish()
     }
 }

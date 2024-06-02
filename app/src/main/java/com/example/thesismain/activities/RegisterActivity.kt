@@ -81,6 +81,7 @@ class RegisterActivity : AppCompatActivity() {
                         val intent = Intent(this@RegisterActivity, RegisterVehicleActivity::class.java)
                         intent.putExtra("auth_token", token)
                         startActivity(intent)
+                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
                         finish()
                     } else {
                         Toast.makeText(this@RegisterActivity, "Registration failed", Toast.LENGTH_SHORT).show()

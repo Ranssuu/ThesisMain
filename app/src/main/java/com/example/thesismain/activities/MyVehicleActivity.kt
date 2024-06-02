@@ -18,7 +18,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MyVehicleActivity : AppCompatActivity() {
+class MyVehicleActivity : BaseActivity() {
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var plateNoTextView: TextView
@@ -31,6 +31,7 @@ class MyVehicleActivity : AppCompatActivity() {
     private lateinit var classificationTextView: TextView
     private lateinit var editButton: Button
     private lateinit var backButton: ImageButton
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +63,7 @@ class MyVehicleActivity : AppCompatActivity() {
                 putExtra("classification", classificationTextView.text.toString())
             }
             startActivity(intent)
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
         }
     }
 
@@ -105,5 +107,6 @@ class MyVehicleActivity : AppCompatActivity() {
     fun onBackPressed(view: View) {
         val intent = Intent(this, SettingsActivity::class.java)
         startActivity(intent)
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
     }
 }

@@ -8,7 +8,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.thesismain.R
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : BaseActivity() {
 
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -18,17 +18,7 @@ class HomeActivity : AppCompatActivity() {
 
         sharedPreferences = getSharedPreferences("MyAppPreferences", MODE_PRIVATE)
 
-        checkIfLoggedIn()
         logStoredData()
-    }
-
-    private fun checkIfLoggedIn() {
-        val token = sharedPreferences.getString("auth_token", null)
-        if (token == null) {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
     }
 
     private fun logStoredData() {
@@ -42,15 +32,21 @@ class HomeActivity : AppCompatActivity() {
     fun onEmissionClicked(view: View) {
         val intent = Intent(this, EmissionActivity::class.java)
         startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        finish()
     }
 
     fun onHistoryClicked(view: View) {
         val intent = Intent(this, HistoryActivity::class.java)
         startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        finish()
     }
 
     fun onSettingsClicked(view: View) {
         val intent = Intent(this, SettingsActivity::class.java)
         startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        finish()
     }
 }

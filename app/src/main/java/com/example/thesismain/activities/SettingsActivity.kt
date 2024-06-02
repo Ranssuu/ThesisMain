@@ -10,7 +10,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.thesismain.R
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsActivity : BaseActivity() {
 
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -21,29 +21,40 @@ class SettingsActivity : AppCompatActivity() {
         sharedPreferences = getSharedPreferences("MyAppPreferences", MODE_PRIVATE)
     }
 
+
     fun onHomeClicked(view: View) {
         val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+        finish()
     }
 
     fun onEmissionClicked(view: View) {
         val intent = Intent(this, EmissionActivity::class.java)
         startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+        finish()
     }
 
     fun onHistoryClicked(view: View) {
         val intent = Intent(this, HistoryActivity::class.java)
         startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+        finish()
     }
 
     fun onProfileClicked(view: View) {
         val intent = Intent(this, MyProfileActivity::class.java)
         startActivity(intent)
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+        finish()
     }
 
     fun onVehicleClicked(view: View) {
         val intent = Intent(this, MyVehicleActivity::class.java)
         startActivity(intent)
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+        finish()
     }
 
     fun onLogoutClicked(view: View) {
@@ -53,6 +64,7 @@ class SettingsActivity : AppCompatActivity() {
 
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
         finish()
     }
 }

@@ -16,7 +16,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class EditProfileActivity : AppCompatActivity() {
+class EditProfileActivity : BaseActivity() {
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var firstNameEditText: TextInputEditText
@@ -112,6 +112,7 @@ class EditProfileActivity : AppCompatActivity() {
                             putExtra("phoneNumber", mobileNumber)
                         }
                         startActivity(intent)
+                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
                         finish()
                     } else {
                         Toast.makeText(this@EditProfileActivity, "Profile update failed", Toast.LENGTH_SHORT).show()

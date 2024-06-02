@@ -22,7 +22,7 @@ import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class HistoryActivity : AppCompatActivity() {
+class HistoryActivity : BaseActivity() {
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var historyContainer: LinearLayout
@@ -78,7 +78,7 @@ class HistoryActivity : AppCompatActivity() {
             val progressBar: ProgressBar = historyWidget.findViewById(R.id.progress_bar)
 
             // Set the opacity value and progress bar
-            val opacityPercentage = ((smokeTest.opacity/3.0) * 100).toInt()
+            val opacityPercentage = ((smokeTest.opacity / 3.0) * 100).toInt()
             opacityTextView.text = "$opacityPercentage%"
             opacityDecimalTextView.text = smokeTest.opacity.toString()
             progressBar.progress = opacityPercentage
@@ -93,11 +93,11 @@ class HistoryActivity : AppCompatActivity() {
             val formattedDate = targetFormat.format(date)
             dateCreatedTextView.text = formattedDate
 
-            // Determine colors based on opacity value
+            // Determine colors based on opacity value and criteria
             val passedColor = ContextCompat.getColor(this, R.color.passedColor)
             val failedColor = ContextCompat.getColor(this, R.color.failedColor)
 
-            if (opacityPercentage > 80) {
+            if (smokeTest.opacity >= 2.4) {
                 resultTextView.text = "Fail"
                 resultTextView.setTextColor(failedColor)
                 opacityTextView.setTextColor(failedColor)
@@ -119,18 +119,21 @@ class HistoryActivity : AppCompatActivity() {
     fun onSettingsClicked(view: View) {
         val intent = Intent(this, SettingsActivity::class.java)
         startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         finish()
     }
 
     fun onHomeClicked(view: View) {
         val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         finish()
     }
 
     fun onEmissionClicked(view: View) {
         val intent = Intent(this, EmissionActivity::class.java)
         startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         finish()
     }
 }

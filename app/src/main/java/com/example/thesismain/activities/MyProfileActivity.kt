@@ -19,7 +19,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MyProfileActivity : AppCompatActivity() {
+class MyProfileActivity : BaseActivity() {
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var firstNameTextView: TextView
@@ -99,11 +99,13 @@ class MyProfileActivity : AppCompatActivity() {
         intent.putExtra("email", emailTextView.text.toString())
         intent.putExtra("phoneNumber", numberTextView.text.toString())
         startActivity(intent)
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
     }
 
 
     fun onBackPressed(view: View) {
         val intent = Intent(this, SettingsActivity::class.java)
         startActivity(intent)
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
     }
 }

@@ -44,6 +44,7 @@ class LoginActivity : AppCompatActivity() {
         registerTextView.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
         }
     }
 
@@ -69,9 +70,10 @@ class LoginActivity : AppCompatActivity() {
                             putString("auth_token", it.token)
                             apply()
                         }
-                        Log.d("LoginActivity", "Token stored: ${it.token}") // Add this line for logging
+                        Log.d("LoginActivity", "Token stored: ${it.token}")
                         val intent = Intent(this@LoginActivity, HomeActivity::class.java)
                         startActivity(intent)
+                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
                         finish()
                     }
                 } else {
