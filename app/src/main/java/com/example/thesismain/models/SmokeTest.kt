@@ -6,6 +6,5 @@ data class SmokeTest(
     val smoke_result: String,
     val createdAt: String,
     val updatedAt: String,
-    val owner: String,
-    val email: String
+    val owner: String
 )

@@ -22,8 +22,7 @@ exports.addSmokeTest = async (req, res) => {
       opacity,
       smoke_result,
       createdAt,
-      email: user.email,
-      owner: req.user.id
+      owner: req.user.id  // Use req.user.id extracted from the token
     });
 
     await smokeTest.save();

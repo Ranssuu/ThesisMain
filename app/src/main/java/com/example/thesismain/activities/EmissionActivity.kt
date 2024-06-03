@@ -264,7 +264,6 @@ class EmissionActivity : BaseActivity() {
         val sharedPref = getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
         val token = sharedPref.getString("auth_token", null)
 
-
         Log.d("EmissionActivity", "Token: $token")
 
         if (token == null) {
