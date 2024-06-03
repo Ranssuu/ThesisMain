@@ -263,6 +263,8 @@ class EmissionActivity : BaseActivity() {
     private fun sendDataToBackend() {
         val sharedPref = getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
         val token = sharedPref.getString("auth_token", null)
+        val email = sharedPref.getString("user_email", null) // Fetch email from shared preferences
+
 
         Log.d("EmissionActivity", "Token: $token")
 
@@ -285,7 +287,8 @@ class EmissionActivity : BaseActivity() {
             "smokeTestId" to UUID.randomUUID().toString(),
             "opacity" to decimalOpacityValue.toString(),
             "smoke_result" to resultTextView.text.toString(),
-            "createdAt" to formattedDate
+            "createdAt" to formattedDate,
+            "email" to email.toString()
         )
 
         Log.d("EmissionActivity", "Data to send: $data")
