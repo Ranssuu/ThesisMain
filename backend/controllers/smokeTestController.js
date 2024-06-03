@@ -22,8 +22,8 @@ exports.addSmokeTest = async (req, res) => {
       opacity,
       smoke_result,
       createdAt,
-      email,
-      owner: req.user.id,
+      email: user.email,
+      owner: req.user.id
     });
 
     await smokeTest.save();
