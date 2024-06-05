@@ -13,7 +13,6 @@ import android.os.Handler
 import android.os.Looper
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -22,7 +21,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.example.thesismain.R
 import com.example.thesismain.api.ApiClient
-import com.example.thesismain.api.ApiService
+import com.example.thesismain.models.User
 import java.util.TimeZone
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -48,6 +47,7 @@ class EmissionActivity : BaseActivity() {
     private lateinit var resultTextView: TextView
     private lateinit var progressBar: ProgressBar
     private lateinit var startTestButton: Button
+    private lateinit var userEmail: String
 
     private val REQUEST_BLUETOOTH_PERMISSIONS = 1
     private var isConnected: Boolean = false
@@ -73,8 +73,7 @@ class EmissionActivity : BaseActivity() {
                     // Use listenForData() instead of receiveData()
                     listenForData()
                     sendDataToBackend()
-                    startTestButton.text = getString(R.string.start_test)
-                    startTestButton.setBackgroundColor(ContextCompat.getColor(this, R.color.Red))
+                    resetStartButton()
                 }, 20000) // 20 seconds delay
             } else {
                 Toast.makeText(this, "Device not connected", Toast.LENGTH_SHORT).show()
@@ -92,6 +91,7 @@ class EmissionActivity : BaseActivity() {
         } else {
             setupBluetooth()
         }
+        fetchUserEmail()
     }
 
     private fun hasPermissions(): Boolean {
@@ -214,11 +214,17 @@ class EmissionActivity : BaseActivity() {
     private fun sendStartCommand() {
         try {
             bluetoothSocket?.outputStream?.write("START\n".toByteArray())
-            Toast.makeText(this, "Start command sent", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Device starting, refrain from clicking anything", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             Log.e(tag, "Failed to send start command", e)
-            Toast.makeText(this, "Failed to send start command", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Device failed to start", Toast.LENGTH_SHORT).show()
+            resetStartButton()
         }
+    }
+
+    private fun resetStartButton() {
+        startTestButton.text = getString(R.string.start_test)
+        startTestButton.setBackgroundColor(ContextCompat.getColor(this, R.color.blue))
     }
 
     private var currentOpacity: Float = 0.0f // Class-level variable to store opacity
@@ -260,6 +266,30 @@ class EmissionActivity : BaseActivity() {
         statusTextView.text = status
     }
 
+    private fun fetchUserEmail() {
+        val sharedPref = getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
+        val token = sharedPref.getString("auth_token", null)
+
+        if (token != null) {
+            val apiService = ApiClient.create(token)
+            val call = apiService.getUserProfile("Bearer $token")
+
+            call.enqueue(object : Callback<User> {
+                override fun onResponse(call: Call<User>, response: Response<User>) {
+                    if (response.isSuccessful) {
+                        userEmail = response.body()?.email ?: ""
+                    } else {
+                        Toast.makeText(this@EmissionActivity, "Failed to fetch user email", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<User>, t: Throwable) {
+                    Toast.makeText(this@EmissionActivity, "Error fetching user email", Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
+    }
+
     private fun sendDataToBackend() {
         val sharedPref = getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
         val token = sharedPref.getString("auth_token", null)
@@ -275,9 +305,9 @@ class EmissionActivity : BaseActivity() {
         val decimalOpacityValue = currentOpacity
 
         // Format the current time to a readable string with timezone information
-        val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault())
-        val pstTimeZone = TimeZone.getTimeZone("Asia/Manila")
-        sdf.timeZone = pstTimeZone
+        val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+        val manilaTimeZone = TimeZone.getTimeZone("Asia/Manila")
+        sdf.timeZone = manilaTimeZone
         val formattedDate = sdf.format(Date())
 
         val apiService = ApiClient.create(token)
@@ -285,7 +315,8 @@ class EmissionActivity : BaseActivity() {
             "smokeTestId" to UUID.randomUUID().toString(),
             "opacity" to decimalOpacityValue.toString(),
             "smoke_result" to resultTextView.text.toString(),
-            "createdAt" to formattedDate
+            "createdAt" to formattedDate,
+            "userEmail" to userEmail
         )
 
         Log.d("EmissionActivity", "Data to send: $data")

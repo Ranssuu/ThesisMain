@@ -1,3 +1,4 @@
+const moment = require('moment-timezone');
 const SmokeTest = require('../models/SmokeTest');
 const Vehicle = require('../models/Vehicle');
 
@@ -7,22 +8,30 @@ const Vehicle = require('../models/Vehicle');
 // Add Smoke Test
 exports.addSmokeTest = async (req, res) => {
   console.log('Received body:', req.body); // Log the request body
-  const { opacity } = req.body;
+  const { opacity, userEmail, createdAt   } = req.body;
 
   if (!opacity) {
       return res.status(400).json({ message: 'Opacity is required' });
     }
 
+    if (!userEmail) {
+      return res.status(400).json({ message: 'User email is required' });
+    }
+
+    if (!createdAt) {
+      return res.status(400).json({ message: 'Created at is required' });
+    }
+
 
   const smoke_result = opacity >= 2.4 ? 'Failed' : 'Passed';
-  const createdAt = new Date().toISOString();
 
   try {
     const smokeTest = new SmokeTest({
       opacity,
       smoke_result,
-      createdAt,
-      owner: req.user.id  // Use req.user.id extracted from the token
+      createdAt: new Date(createdAt),
+      owner: req.user.id,  // Use req.user.id extracted from the token
+      userEmail
     });
 
     await smokeTest.save();

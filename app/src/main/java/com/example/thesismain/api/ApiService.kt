@@ -78,4 +78,5 @@ interface ApiService {
     // Get smoke test history
     @GET("api/smokeTests/history")
     fun getHistory(@Header("Authorization") token: String): Call<List<SmokeTest>>
+
 }

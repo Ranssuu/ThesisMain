@@ -12,7 +12,11 @@ const SmokeTestSchema = new Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now,
+    required: true,
+  },
+  userEmail: {
+      type: String,
+      required: true,
   },
   owner: {
     type: Schema.Types.ObjectId,
